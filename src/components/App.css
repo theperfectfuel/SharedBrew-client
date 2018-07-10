@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-image: url(../resources/beer-with-grains-hops.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #222;
+  min-height: 400px;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  font-size: 2em;
+  text-shadow: 1px 1px 1px #333;
+}
+
+.App-header h1 {
+  font-size: 2.9em;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+ul li:hover {
+  background-color: #fff;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
