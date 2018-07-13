@@ -45,18 +45,30 @@ class ButtonAppBar extends Component {
                 return;
             case false:
                 return(
-                    <Button style={loginBtnStyle} color="inherit">
-                        <a href="/auth/google">Login</a>
+                    <Button 
+                        //component={Link} 
+                        to="/auth/google" 
+                        style={loginBtnStyle}
+                        color="inherit">
+                        Login
                     </Button>
                 );  
             default:
                 return(
                     <div>
-                        <Button style={loginBtnStyle} color="inherit">
-                            <Link to="/new-recipe">New Recipe</Link>
+                        <Button 
+                            component={Link} 
+                            to="/new-recipe" 
+                            style={loginBtnStyle} 
+                            color="inherit">
+                            New Recipe
                         </Button>
-                        <Button style={loginBtnStyle} color="inherit">
-                            <a href="/logout">Logout</a>
+                        <Button 
+                            component={Link}
+                            to="/logout"
+                            style={loginBtnStyle} 
+                            color="inherit">
+                            Logout
                         </Button>
                     </div>
                 );
