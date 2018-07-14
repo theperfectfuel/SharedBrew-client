@@ -3,20 +3,21 @@ import React from 'react';
 export default ({ input, label, meta: {error, touched} }) => {
 
     const inputStyle = {
-        width: '70%',
+        width: '90%',
         float: 'right',
-        border: '0',
-        borderBottom: '1px solid lightgray',
+        border: '1px solid lightgray',
+        //borderBottom: '1px solid lightgray',
         padding: '12px',
         margin: '10px',
         fontSize: '18px',
-        resize: 'both'
+        resize: 'vertical',
+        minHeight: '250px'
     }
 
     const labelStyle = {
-        width: '20%',
+        width: '50%',
         float: 'left',
-        textAlign: 'right',
+        textAlign: 'left',
         marginTop: '20px'
     }
 
@@ -30,8 +31,8 @@ export default ({ input, label, meta: {error, touched} }) => {
         <div>
             <label style={labelStyle}>
                 {label}
-            </label>
-            <input style={Object.assign(inputStyle)} {...input}  />
+            </label><br />
+            <textarea style={Object.assign(inputStyle)} {...input}  />
             {touched && error}
             <span style={clearStyle}></span>
         </div>

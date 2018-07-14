@@ -31,7 +31,12 @@ export default ({ input, label, meta: {error, touched} }) => {
             <label style={labelStyle}>
                 {label}
             </label>
-            <input style={Object.assign(inputStyle)} {...input}  />
+            <select style={Object.assign(inputStyle)} {...input}>
+                <option></option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
             {touched && error}
             <span style={clearStyle}></span>
         </div>
