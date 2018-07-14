@@ -76,6 +76,16 @@ class Recipe extends Component {
             });
             this.setState({hops});
 
+            const other = this.state.recipe.other_list.map((other, index) => {
+                return(
+                        <div style={sectionStyle} key={index}>
+                            <span>Other ingredient: {other.other_ingredient}</span><br />
+                            <span>Other amount: {other.other_amount}</span>
+                        </div>
+                    ); 
+            });
+            this.setState({other});
+
         })
     }
 
@@ -115,6 +125,9 @@ class Recipe extends Component {
                     </Typography>
                     <Typography variant="display1" style={sectionStyle} component="div">
                         Yeast: {this.state.yeast}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Other: {this.state.other}
                     </Typography>
                     <Typography variant="display1" style={Object.assign({}, sectionStyle, instructionsStyle)} component="div">
                         Brew Instructions: {this.state.recipe.brew_instructions}

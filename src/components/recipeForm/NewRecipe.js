@@ -1,19 +1,79 @@
 import React, { Component } from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import FormTextField from './FormTextField';
+import FormTextArea from './FormTextArea';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import axios from 'axios';
+
+const renderedArrayStyle = {
+    margin: '50px 0',
+    padding: '5px 0',
+    backgroundColor: '#fbfbfb'
+}
+
+const formStyle = {
+    minWidth: '320px',
+    maxWidth: '700px',
+    margin: '50px auto'
+}
+
+const inputStyle = {
+    width: '70%',
+    float: 'right',
+    border: '0',
+    borderBottom: '1px solid lightgray',
+    padding: '12px',
+    margin: '10px',
+    fontSize: '18px',
+    resize: 'both'
+}
+
+const labelStyle = {
+    width: '20%',
+    float: 'left',
+    textAlign: 'right',
+    marginTop: '20px'
+}
+
+const clearStyle = {
+    content: '',
+    display: 'table',
+    clear: 'both'
+}
 
 const FIELDS = [
     { label: 'Beer Name', name: 'beer_name'},
     { label: 'Beer Style', name: 'beer_style'},
     { label: 'Beer ABV', name: 'beer_abv'},
     { label: 'Original Gravity', name: 'orig_grav'},
-    { label: 'Final Gravity', name: 'final_grav'},
-    { label: 'Brew Difficulty', name: 'brew_difficulty'},
-    { label: 'Batch Size', name: 'batch_size'}
+    { label: 'Final Gravity', name: 'final_grav'}
 ];
+
+// const SELECT_FIELDS = [
+//     {   label: 'Brew Difficulty', 
+//         name: 'brew_difficulty',
+//         options: ['Easy', 'Medium', 'Hard']
+//     },
+//     {   label: 'Batch Size', 
+//         name: 'batch_size',
+//         options: [1, 3, 5]
+//     }
+// ];
+
+// const renderedSelectFields = FIELDS.map(field => {
+//     return (
+//         <div key={field.name}>
+//             <Field 
+//                 label={field.label} 
+//                 type='select' 
+//                 name={field.name} 
+//                 component={FormSelect} 
+//                 options={field.options}
+//             />
+//         </div>
+//     )
+// });
 
 const renderedFields = FIELDS.map(field => {
     return (
@@ -28,6 +88,53 @@ const renderedFields = FIELDS.map(field => {
     )
 });
 
+const renderedInstructions = () => {
+    return(
+        <div>
+            <Field 
+                label="Brew Instructions" 
+                type='textarea' 
+                name='brew_instructions' 
+                component={FormTextArea} 
+            />
+        </div>
+    )
+};
+
+const renderedDifficulty = () => {
+    return(
+        <div>
+            <label style={labelStyle}>Brew Difficulty</label>
+            <div>
+            <Field style={inputStyle} name="brew_difficulty" component="select">
+                <option></option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </Field>
+            </div>
+            <span style={clearStyle}></span>
+        </div>
+    )
+};
+
+const renderedBatchSize = () => {
+    return(
+        <div>
+            <label style={labelStyle}>Batch Size</label>
+            <div>
+            <Field style={inputStyle} name="batch_size" component="select">
+                <option></option>
+                <option value="1">1 gal</option>
+                <option value="3">3 gals</option>
+                <option value="5">5 gals</option>
+            </Field>
+            </div>
+            <span style={clearStyle}></span>
+        </div>
+    )
+};
+
 export class NewRecipe extends Component {
 
     constructor(props) {
@@ -37,44 +144,38 @@ export class NewRecipe extends Component {
     }
 
     renderGrains = ({ fields, meta: { error, submitFailed } }) => (
-        <ul>
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Grains
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
+        <ul style={renderedArrayStyle}>
             {fields.map((grain, index) =>
                 <li key={index}>
-                    <button type="button" onClick={() => fields.remove(index)}>
-                        Remove grains 
-                    </button>
                     <h4>Grain #{index + 1}</h4>
+                    <button type="button" onClick={() => fields.remove(index)}>
+                        Remove these grains 
+                    </button>
                     <Field 
                         name={`${grain}.grains_type`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Grain Type"
                     />
                     <Field 
                         name={`${grain}.grains_amount`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Grain Amount"
                     />
                 </li>
             )}
+            <li>
+                <button type="button" onClick={() => fields.push({})}>
+                    Add Grains
+                </button>
+                <div>{submitFailed && error && <span>{error}</span>}</div>
+            </li>
         </ul>
     );
 
     renderHops = ({ fields, meta: { error, submitFailed } }) => (
-        <ul>
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Hops
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
+        <ul style={renderedArrayStyle}>
             {fields.map((hop, index) => (
                 <li key={index}>
                     <button type="button" onClick={() => fields.remove(index)}>
@@ -84,28 +185,28 @@ export class NewRecipe extends Component {
                     <Field 
                         name={`${hop}.hops_type`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Hops Type"
                     />
                     <Field 
                         name={`${hop}.hops_amount`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Hops Amount"
                     />
                 </li>
             ))}
+            <li>
+                <button type="button" onClick={() => fields.push({})}>
+                    Add Hops
+                </button>
+                {submitFailed && error && <span>{error}</span>}
+            </li>
         </ul>
     );
 
     renderYeast = ({ fields, meta: { error, submitFailed } }) => (
-        <ul>
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Yeast
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
+        <ul style={renderedArrayStyle}>
             {fields.map((yeast, index) => (
                 <li key={index}>
                     <button type="button" onClick={() => fields.remove(index)}>
@@ -115,28 +216,28 @@ export class NewRecipe extends Component {
                     <Field 
                         name={`${yeast}.yeast_type`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Yeast Type"
                     />
                     <Field 
                         name={`${yeast}.yeast_amount`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Yeast Amount"
                     />
                 </li>
             ))}
+            <li>
+                <button type="button" onClick={() => fields.push({})}>
+                    Add Yeast
+                </button>
+                {submitFailed && error && <span>{error}</span>}
+            </li>
         </ul>
     );
 
     renderOther = ({ fields, meta: { error, submitFailed } }) => (
-        <ul>
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Other Ingredient
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
+        <ul style={renderedArrayStyle}>
             {fields.map((other, index) => (
                 <li key={index}>
                     <button type="button" onClick={() => fields.remove(index)}>
@@ -144,34 +245,27 @@ export class NewRecipe extends Component {
                     </button>
                     <h4>Ingredient #{index + 1}</h4>
                     <Field 
-                        name={`${other}.type`}
+                        name={`${other}.other_ingredient`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Ingredient Type"
                     />
                     <Field 
-                        name={`${other}.amount`}
+                        name={`${other}.other_amount`}
                         type="text"
-                        component="input"
+                        component={FormTextField}
                         label="Ingredient Amount"
                     />
                 </li>
             ))}
+            <li>
+                <button type="button" onClick={() => fields.push({})}>
+                    Add Other Ingredient
+                </button>
+                {submitFailed && error && <span>{error}</span>}
+            </li>
         </ul>
     );
-
-    renderInstructions() {
-        return(
-            <div>
-                <Field 
-                    label="Brew Instructions" 
-                    type='textarea' 
-                    name='brew_instructions' 
-                    component='input' 
-                />
-            </div>
-        )
-    };
 
     doSubmit = (e) => {
         e.preventDefault();
@@ -201,14 +295,17 @@ export class NewRecipe extends Component {
         } = this.props;
 
         return(
-            <div>
+            <div style={Object.assign(formStyle)}>
+            <h2>Create a new recipe</h2>
                 <form onSubmit={(e) => this.doSubmit(e)}>
                     {renderedFields}
+                    {renderedDifficulty()}
+                    {renderedBatchSize()}
                     <FieldArray name="grains_list" component={this.renderGrains} />
                     <FieldArray name="hops_list" component={this.renderHops} />
                     <FieldArray name="yeast_list" component={this.renderYeast} />
                     <FieldArray name="other_list" component={this.renderOther} />
-                    {this.renderInstructions()}
+                    {renderedInstructions()}
                     <div>
                         <button 
                             type="submit"

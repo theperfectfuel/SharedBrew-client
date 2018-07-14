@@ -34,12 +34,20 @@
   font-size: large;
 }
 
-ul li {
-  list-style-type: none;
+button {
+  font-size: 1em;
+  background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+  margin-left: 5px;
+  border: none;
+  font-size: 18px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  color: #fff;
 }
 
-ul li:hover {
-  background-color: #fff;
+ul li {
+  list-style-type: none;
+  padding: 30px 10px;
 }
 
 @keyframes App-logo-spin {
