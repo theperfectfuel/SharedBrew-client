@@ -1,0 +1,136 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
+
+const styles = theme => ({
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
+  },
+});
+
+const sectionStyle = {
+    padding: '5px',
+    margin: '20px'
+}
+
+class ShoppingList extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            shoppingList: {},
+        };
+    }
+
+    componentDidMount() {
+        const id = this.props.match.params.shoppingListId;
+        const shoppingListURL = 'http://localhost:8080/shopping-list/' + id;
+        console.log(shoppingListURL);
+
+        axios(shoppingListURL, {
+            withCredentials: true,
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        //fetch(shoppingListURL)
+        .then(response => {
+          return response.data;
+        })
+        .then(data => {
+          this.setState({
+              shoppingList: data
+          })
+          console.log('shoppingList from state: ', this.state.shoppingList);
+        })
+        .then(() => {
+
+            const grains = this.state.shoppingList.grains_list.map((grain, index) => {
+                return(
+                        <div style={sectionStyle} key={index}>
+                            <span>Grain type: {grain.grains_type}</span><br />
+                            <span>Grain amount: {grain.grains_amount}</span>
+                        </div>
+                    ); 
+            });
+            this.setState({grains});
+
+            const yeast = this.state.shoppingList.yeast_list.map((yeast, index) => {
+                return(
+                        <div style={sectionStyle} key={index}>
+                            <span>Yeast type: {yeast.yeast_type}</span><br />
+                            <span>Yeast amount: {yeast.yeast_amount}</span>
+                        </div>
+                    ); 
+            });
+            this.setState({yeast});
+
+            const hops = this.state.shoppingList.hops_list.map((hops, index) => {
+                return(
+                        <div style={sectionStyle} key={index}>
+                            <span>Hops type: {hops.hops_type}</span><br />
+                            <span>Hops amount: {hops.hops_amount}</span>
+                        </div>
+                    ); 
+            });
+            this.setState({hops});
+
+            const other = this.state.shoppingList.other_list.map((other, index) => {
+                return(
+                        <div style={sectionStyle} key={index}>
+                            <span>Other ingredient: {other.other_ingredient}</span><br />
+                            <span>Other amount: {other.other_amount}</span>
+                        </div>
+                    ); 
+            });
+            this.setState({other});
+
+        })
+    }
+
+    render() {
+
+        const { classes } = this.props;
+
+        return(
+            <div>
+                <Paper className={classes.root} elevation={1}>
+                    <Typography variant="display4" component="h1">
+                        {this.state.shoppingList.beer_name}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Batch Size: {this.state.shoppingList.batch_size}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Grains: {this.state.grains}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Hops: {this.state.hops}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Yeast: {this.state.yeast}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        Other Ingredients: {this.state.other}
+                    </Typography>
+                </Paper>
+
+            </div>
+        );
+
+    }
+}
+
+ShoppingList.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(ShoppingList);

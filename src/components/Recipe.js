@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -21,6 +22,8 @@ const instructionsStyle = {
     whiteSpace: 'pre-wrap'
 }
 
+var shoppingListUrl = '';
+
 class Recipe extends Component {
 
     constructor(props) {
@@ -33,16 +36,17 @@ class Recipe extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.recipeId;
+        shoppingListUrl = 'http://localhost:8080/shopping-list/' + id;
         const recipeURL = 'http://localhost:8080/list-recipes/' + id;
         fetch(recipeURL)
         .then(response => {
           return response.json()
         })
         .then(data => {
-          console.log('recipe', data);
           this.setState({
               recipe: data
           })
+          console.log('recipe from state: ', this.state.recipe);
         })
         .then(() => {
 
@@ -91,6 +95,26 @@ class Recipe extends Component {
 
     render() {
 
+        const createShoppingList = (e) => {
+
+            e.preventDefault();
+            console.log('recipe from state in createShoppingList: ', this.state.recipe);
+    
+            axios(shoppingListUrl, {
+                method: 'post',
+                data: this.state.recipe,
+                withCredentials: true
+            })
+                .then(response => {
+                    console.log(response);
+                    window.location = '/list-recipes';
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+    
+        }
+
         const { classes } = this.props;
 
         return(
@@ -104,6 +128,12 @@ class Recipe extends Component {
                     </Typography>
                     <Typography variant="display1" style={sectionStyle} component="div">
                         Style: {this.state.recipe.beer_style}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        IBU (Bitterness): {this.state.recipe.beer_ibu}
+                    </Typography>
+                    <Typography variant="display1" style={sectionStyle} component="div">
+                        SRM (Color): {this.state.recipe.beer_srm}
                     </Typography>
                     <Typography variant="display1" style={sectionStyle} component="div">
                         Difficulty: {this.state.recipe.brew_difficulty}
@@ -130,8 +160,13 @@ class Recipe extends Component {
                         Other: {this.state.other}
                     </Typography>
                     <Typography variant="display1" style={Object.assign({}, sectionStyle, instructionsStyle)} component="div">
-                        Brew Instructions: {this.state.recipe.brew_instructions}
+                        Brew Instructions: <div>{this.state.recipe.brew_instructions}</div>
                     </Typography>
+                    <div>
+                        <form onSubmit={createShoppingList}>
+                            <button type='submit'>Create a new shopping list</button>
+                        </form>
+                    </div>
                 </Paper>
 
             </div>

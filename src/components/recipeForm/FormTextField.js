@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ input, label, meta: {error, touched} }) => {
+export default ({ input, label, meta: {warning, error, touched} }) => {
 
     const inputStyle = {
         width: '70%',
@@ -26,14 +26,18 @@ export default ({ input, label, meta: {error, touched} }) => {
         clear: 'both'
     }
 
+    const warningStyle = {
+        color: 'red'
+    }
+
     return(
         <div>
             <label style={labelStyle}>
                 {label}
             </label>
-            <input style={Object.assign(inputStyle)} {...input}  />
-            {touched && error}
+            <input style={Object.assign(inputStyle)} {...input}  /><br />
             <span style={clearStyle}></span>
+            {touched && ((error && <div style={warningStyle}>{error}</div>) || (warning && <div style={warningStyle}>{warning}</div>))}
         </div>
     );
 };

@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import axios from 'axios';
 
+//############################################
+// STYLES
+//############################################
+
 const renderedArrayStyle = {
     margin: '50px 0',
     padding: '5px 0',
@@ -42,13 +46,51 @@ const clearStyle = {
     clear: 'both'
 }
 
+//############################################
+// VALIDATION
+//############################################
+
+const required = value => value ? undefined : 'Required'
+const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined
+
+function validate(values) {
+    const errors = {};
+
+    if (!values.beer_name) {
+        errors.beer_name = 'Please provide a name for this recipe'
+    }
+    if (!values.beer_style) {
+        errors.beer_style = 'Please provide a style for this recipe'
+    }
+    if (!values.beer_abv) {
+        errors.beer_abv = 'Please provide a numeric ABV for this recipe'
+    }
+    if (!values.brew_difficulty) {
+        errors.brew_difficulty = 'Please provide a brew difficulty for this recipe'
+    }
+    if (!values.batch_size) {
+        errors.batch_size = 'Please provide a numeric batch size for this recipe'
+    }
+
+    return errors;
+}
+
+//############################################
+// ARRAY FOR BASIC FIELD RENDERING
+//############################################
 const FIELDS = [
-    { label: 'Beer Name', name: 'beer_name'},
+    { label: 'Beer Name', name: 'beer_name', validate: [ required ]},
     { label: 'Beer Style', name: 'beer_style'},
     { label: 'Beer ABV', name: 'beer_abv'},
+    { label: 'IBU (Bitterness)', name: 'beer_ibu'},
+    { label: 'SRM (Color)', name: 'beer_srm'},
     { label: 'Original Gravity', name: 'orig_grav'},
     { label: 'Final Gravity', name: 'final_grav'}
 ];
+
+//############################################
+// ARRAY FOR SELECT FIELD RENDERING
+//############################################
 
 // const SELECT_FIELDS = [
 //     {   label: 'Brew Difficulty', 
@@ -74,6 +116,10 @@ const FIELDS = [
 //         </div>
 //     )
 // });
+
+//############################################
+// RENDERING FIELDS FOR FORM
+//############################################
 
 const renderedFields = FIELDS.map(field => {
     return (
@@ -123,7 +169,12 @@ const renderedBatchSize = () => {
         <div>
             <label style={labelStyle}>Batch Size</label>
             <div>
-            <Field style={inputStyle} name="batch_size" component="select">
+            <Field 
+                style={inputStyle} 
+                name="batch_size" 
+                component="select"
+                validate={[ required ]}
+                >
                 <option></option>
                 <option value="1">1 gal</option>
                 <option value="3">3 gals</option>
@@ -135,6 +186,134 @@ const renderedBatchSize = () => {
     )
 };
 
+const renderGrains = ({ fields, meta: { error, submitFailed } }) => (
+    <ul style={renderedArrayStyle}>
+        {fields.map((grain, index) =>
+            <li key={index}>
+                <h4>Grain #{index + 1}</h4>
+                <button type="button" onClick={() => fields.remove(index)}>
+                    Remove these grains 
+                </button>
+                <Field 
+                    name={`${grain}.grains_type`}
+                    type="text"
+                    component={FormTextField}
+                    label="Grain Type"
+                />
+                <Field 
+                    name={`${grain}.grains_amount`}
+                    type="text"
+                    component={FormTextField}
+                    label="Grain Amount"
+                />
+            </li>
+        )}
+        <li>
+            <button type="button" onClick={() => fields.push({})}>
+                Add Grains
+            </button>
+            <div>{submitFailed && error && <span>{error}</span>}</div>
+        </li>
+    </ul>
+);
+
+const renderHops = ({ fields, meta: { error, submitFailed } }) => (
+    <ul style={renderedArrayStyle}>
+        {fields.map((hop, index) => (
+            <li key={index}>
+                <button type="button" onClick={() => fields.remove(index)}>
+                    Remove hops 
+                </button>
+                <h4>Hops #{index + 1}</h4>
+                <Field 
+                    name={`${hop}.hops_type`}
+                    type="text"
+                    component={FormTextField}
+                    label="Hops Type"
+                />
+                <Field 
+                    name={`${hop}.hops_amount`}
+                    type="text"
+                    component={FormTextField}
+                    label="Hops Amount"
+                />
+            </li>
+        ))}
+        <li>
+            <button type="button" onClick={() => fields.push({})}>
+                Add Hops
+            </button>
+            {submitFailed && error && <span>{error}</span>}
+        </li>
+    </ul>
+);
+
+const renderYeast = ({ fields, meta: { error, submitFailed } }) => (
+    <ul style={renderedArrayStyle}>
+        {fields.map((yeast, index) => (
+            <li key={index}>
+                <button type="button" onClick={() => fields.remove(index)}>
+                    Remove yeast 
+                </button>
+                <h4>Yeast #{index + 1}</h4>
+                <Field 
+                    name={`${yeast}.yeast_type`}
+                    type="text"
+                    component={FormTextField}
+                    label="Yeast Type"
+                />
+                <Field 
+                    name={`${yeast}.yeast_amount`}
+                    type="text"
+                    component={FormTextField}
+                    label="Yeast Amount"
+                />
+            </li>
+        ))}
+        <li>
+            <button type="button" onClick={() => fields.push({})}>
+                Add Yeast
+            </button>
+            {submitFailed && error && <span>{error}</span>}
+        </li>
+    </ul>
+);
+
+const renderOther = ({ fields, meta: { error, submitFailed } }) => (
+    <ul style={renderedArrayStyle}>
+        {fields.map((other, index) => (
+            <li key={index}>
+                <button type="button" onClick={() => fields.remove(index)}>
+                    Remove ingredient 
+                </button>
+                <h4>Ingredient #{index + 1}</h4>
+                <Field 
+                    name={`${other}.other_ingredient`}
+                    type="text"
+                    component={FormTextField}
+                    label="Ingredient Type"
+                />
+                <Field 
+                    name={`${other}.other_amount`}
+                    type="text"
+                    component={FormTextField}
+                    label="Ingredient Amount"
+                />
+            </li>
+        ))}
+        <li>
+            <button type="button" onClick={() => fields.push({})}>
+                Add Other Ingredient
+            </button>
+            {submitFailed && error && <span>{error}</span>}
+        </li>
+    </ul>
+);
+
+//############################################
+// CLASS DEFINITION
+//############################################
+
 export class NewRecipe extends Component {
 
     constructor(props) {
@@ -143,148 +322,30 @@ export class NewRecipe extends Component {
         this.state = {};
     }
 
-    renderGrains = ({ fields, meta: { error, submitFailed } }) => (
-        <ul style={renderedArrayStyle}>
-            {fields.map((grain, index) =>
-                <li key={index}>
-                    <h4>Grain #{index + 1}</h4>
-                    <button type="button" onClick={() => fields.remove(index)}>
-                        Remove these grains 
-                    </button>
-                    <Field 
-                        name={`${grain}.grains_type`}
-                        type="text"
-                        component={FormTextField}
-                        label="Grain Type"
-                    />
-                    <Field 
-                        name={`${grain}.grains_amount`}
-                        type="text"
-                        component={FormTextField}
-                        label="Grain Amount"
-                    />
-                </li>
-            )}
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Grains
-                </button>
-                <div>{submitFailed && error && <span>{error}</span>}</div>
-            </li>
-        </ul>
-    );
-
-    renderHops = ({ fields, meta: { error, submitFailed } }) => (
-        <ul style={renderedArrayStyle}>
-            {fields.map((hop, index) => (
-                <li key={index}>
-                    <button type="button" onClick={() => fields.remove(index)}>
-                        Remove hops 
-                    </button>
-                    <h4>Hops #{index + 1}</h4>
-                    <Field 
-                        name={`${hop}.hops_type`}
-                        type="text"
-                        component={FormTextField}
-                        label="Hops Type"
-                    />
-                    <Field 
-                        name={`${hop}.hops_amount`}
-                        type="text"
-                        component={FormTextField}
-                        label="Hops Amount"
-                    />
-                </li>
-            ))}
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Hops
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
-        </ul>
-    );
-
-    renderYeast = ({ fields, meta: { error, submitFailed } }) => (
-        <ul style={renderedArrayStyle}>
-            {fields.map((yeast, index) => (
-                <li key={index}>
-                    <button type="button" onClick={() => fields.remove(index)}>
-                        Remove yeast 
-                    </button>
-                    <h4>Yeast #{index + 1}</h4>
-                    <Field 
-                        name={`${yeast}.yeast_type`}
-                        type="text"
-                        component={FormTextField}
-                        label="Yeast Type"
-                    />
-                    <Field 
-                        name={`${yeast}.yeast_amount`}
-                        type="text"
-                        component={FormTextField}
-                        label="Yeast Amount"
-                    />
-                </li>
-            ))}
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Yeast
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
-        </ul>
-    );
-
-    renderOther = ({ fields, meta: { error, submitFailed } }) => (
-        <ul style={renderedArrayStyle}>
-            {fields.map((other, index) => (
-                <li key={index}>
-                    <button type="button" onClick={() => fields.remove(index)}>
-                        Remove ingredient 
-                    </button>
-                    <h4>Ingredient #{index + 1}</h4>
-                    <Field 
-                        name={`${other}.other_ingredient`}
-                        type="text"
-                        component={FormTextField}
-                        label="Ingredient Type"
-                    />
-                    <Field 
-                        name={`${other}.other_amount`}
-                        type="text"
-                        component={FormTextField}
-                        label="Ingredient Amount"
-                    />
-                </li>
-            ))}
-            <li>
-                <button type="button" onClick={() => fields.push({})}>
-                    Add Other Ingredient
-                </button>
-                {submitFailed && error && <span>{error}</span>}
-            </li>
-        </ul>
-    );
-
     doSubmit = (e) => {
         e.preventDefault();
-        console.log(this.state);
-        console.log(this.props.formValues);
 
-        axios('http://localhost:8080/new-recipe', {
-            method: 'post',
-            data: this.props.formValues,
-            withCredentials: true
-        })
-            .then(response => {
-                console.log(response);
-                window.location = '/list-recipes';
+        if (!this.props.errors) {
+
+            axios('http://localhost:8080/new-recipe', {
+                method: 'post',
+                data: this.props.formValues,
+                withCredentials: true
             })
-            .catch(error => {
-                console.log(error);
-            })
+                .then(response => {
+                    console.log(response);
+                    window.location = '/list-recipes';
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+
+        } else {
+            alert('fix your errors please');
+        }
+
     };
+
 
     render() {
 
@@ -301,10 +362,10 @@ export class NewRecipe extends Component {
                     {renderedFields}
                     {renderedDifficulty()}
                     {renderedBatchSize()}
-                    <FieldArray name="grains_list" component={this.renderGrains} />
-                    <FieldArray name="hops_list" component={this.renderHops} />
-                    <FieldArray name="yeast_list" component={this.renderYeast} />
-                    <FieldArray name="other_list" component={this.renderOther} />
+                    <FieldArray name="grains_list" component={renderGrains} />
+                    <FieldArray name="hops_list" component={renderHops} />
+                    <FieldArray name="yeast_list" component={renderYeast} />
+                    <FieldArray name="other_list" component={renderOther} />
                     {renderedInstructions()}
                     <div>
                         <button 
@@ -322,34 +383,6 @@ export class NewRecipe extends Component {
         );
 
     }
-}
-
-function validate(values) {
-    const errors = {};
-
-    if (!values.beer_name) {
-        errors.beer_name = 'Please provide a name for this recipe'
-    }
-    if (!values.beer_style) {
-        errors.beer_style = 'Please provide a style for this recipe'
-    }
-    if (!values.beer_abv) {
-        errors.beer_abv = 'Please provide a numeric ABV for this recipe'
-    }
-    if (!values.orig_grav) {
-        errors.orig_grav = 'Please provide a numeric original gravity for this recipe'
-    }
-    if (!values.final_grav) {
-        errors.final_grav = 'Please provide a numeric final gravity for this recipe'
-    }
-    if (!values.brew_difficulty) {
-        errors.brew_difficulty = 'Please provide a brew difficulty for this recipe'
-    }
-    if (!values.batch_size) {
-        errors.batch_size = 'Please provide a numeric batch size for this recipe'
-    }
-
-    return errors;
 }
 
 function mapStateToProps(state) {

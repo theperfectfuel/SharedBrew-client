@@ -15,7 +15,6 @@ class RecipeContainer extends Component {
             return response.json()
           })
           .then(data => {
-            console.log('data in cdm', data);
             this.setState({
                 recipes: data
             })
@@ -25,17 +24,24 @@ class RecipeContainer extends Component {
 
     render() {
 
-        const recipes = this.state.recipes.map((list) => {
-            console.log(list._id)
-            return <li key={list._id}>
+        const recipeListStyle = {
+            padding: '0',
+            fontSize: '18px'
+        };
+
+        const recipes = this.state.recipes.map((recipe) => {
+            console.log(recipe._id)
+            return <li key={recipe._id}>
                     <div>
-                    <Link to={'/list-recipes/' + list._id}>Name: {list.beer_name}</Link><br />
-                    ABV: {list.beer_abv}<br />
+                        <Link to={'/list-recipes/' + recipe._id}>Name: {recipe.beer_name}</Link><br />
                     </div>
                     <div>
                     <p>
-                    Style: {list.beer_style}<br />
-                    Difficulty: {list.brew_difficulty}
+                    ABV: {recipe.beer_abv}<br />
+                    Style: {recipe.beer_style}<br />
+                    Difficulty: {recipe.brew_difficulty}<br />
+                    IBU: {recipe.beer_ibu}<br />
+                    SRM: {recipe.beer_srm}
                     </p>
                     </div>
                 </li>
@@ -45,7 +51,7 @@ class RecipeContainer extends Component {
         return (
             <div>
                 <h2>Beer Recipes</h2>
-                <ul>
+                <ul style={recipeListStyle}>
                     {recipes}
                 </ul>
             </div>
