@@ -11,6 +11,7 @@ import Footer from './Footer';
 import Home from './Home';
 import Recipe from './Recipe';
 import NewRecipe from './recipeForm/NewRecipe';
+import ShoppingList from './ShoppingList';
 
 class App extends Component {
 
@@ -31,6 +32,7 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/" component={Home} />
           <Route path="/list-recipes/:recipeId" component={Recipe} />
+          <Route path="/list-shopping-lists/:shoppingListId" component={ShoppingList} />
           <Route exact path="/new-recipe" component={NewRecipe} />
           <Footer />
         </div>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class ShoppingListContainer extends Component {
     constructor(props) {
@@ -12,38 +14,57 @@ class ShoppingListContainer extends Component {
 
     componentDidMount() {
 
-        fetch('http://localhost:8080/shopping-lists')
+        axios('http://localhost:8080/shopping-lists', {
+            withCredentials: true,
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
           .then(response => {
-            return response.json()
+            console.log('getting response')
+            return response.data;
           })
           .then(data => {
+            console.log('data is: ', data);
             var newBrewer = data.pop().brewer;
-            console.log('data in cdm', data);
-            console.log('brewer in cdm', newBrewer);
             this.setState({
                 shoppingLists: data,
                 brewer: newBrewer
             })
+            console.log('state is now: ', this.state);
           })
     
       }
 
     render() {
 
+        const shoppingListStyle = {
+            padding: '0',
+            fontSize: '18px'
+        };
+
         const shoppingLists = this.state.shoppingLists.map((list, index) => {
-            return <li className="shopping-list-stub" key={index}>
-                    Name: {list.beer_name}<br />
-                    ABV: {list.beer_abv}<br />
-                    Style: {list.beer_style}<br />
-                    Difficulty: {list.brew_difficulty}
+            return (
+                <li key={list._id}>
+                    <div>
+                        <Link to={'/list-shopping-lists/' + list._id}>Name: {list.beer_name}</Link><br />
+                    </div>
+                    <div>
+                        <p>
+                            Date Created: {list.createdDate.slice(0, 10)}<br />
+                            Batch Size: {list.batch_size}
+                        </p>
+                    </div>
                 </li>
+            );
         });
-        console.log('shopping lists', shoppingLists);
 
         return (
             <div>
                 <h2>Shopping Lists for {this.state.brewer}</h2>
-                <ul>
+                <ul style={shoppingListStyle}>
                     {shoppingLists}
                 </ul>
             </div>

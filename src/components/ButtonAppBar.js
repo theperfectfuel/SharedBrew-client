@@ -47,7 +47,7 @@ class ButtonAppBar extends Component {
                 return(
                     <Button 
                         //component={Link} 
-                        to="/auth/google" 
+                        href="/auth/google" 
                         style={loginBtnStyle}
                         color="inherit">
                         Login
@@ -58,14 +58,21 @@ class ButtonAppBar extends Component {
                     <div>
                         <Button 
                             component={Link} 
+                            to="/list-shopping-lists" 
+                            style={loginBtnStyle} 
+                            color="inherit">
+                            My Shopping Lists
+                        </Button>
+                        <Button 
+                            component={Link} 
                             to="/new-recipe" 
                             style={loginBtnStyle} 
                             color="inherit">
                             New Recipe
                         </Button>
                         <Button 
-                            component={Link}
-                            to="/logout"
+                            //component={Link}
+                            href="/logout"
                             style={loginBtnStyle} 
                             color="inherit">
                             Logout
