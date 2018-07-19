@@ -2,4 +2,11 @@ language: node_js
 node_js: node
 cache:
   directories:
-    - node_modules
+  - node_modules
+deploy:
+  provider: heroku
+  api_key:
+    secure: MRKGEmKioKvfWY8Nk4hbFN+FVWnATzcHbfwk09XjLUwV1XSwtcZIhQ6FAqUb1+1xdqR8LxqAyQPIW4wsdl5wvnCWKIbAI82E0tKWrfZTZdHFmaqHF8YEkR2HLh7QnIuF06YPyjMwyQpvHGNjqvMmGhz58ILbjvhml4cSGDztDa++71SrY/JWaf9vy155QVv+h+OG20btLAYiIgfOUBDiRJ2o/ZBqggKhlE0RmV90MFmBnp8RLLxl5nmCnEaCqhjMxMk+GZmtOIGJEQagnfwEYF5nKaC7aJx82Zv/2Jj20TSplggQ9BS3cfeYoaklFqqBMMitr3D6MLETQ+LYAjHshpbA5MUBvGX1dgByrx5ej7YgASa7lt+FKKO1cy3qpEGxIlPbvqqSkysVdBmrov6vBh6xyg858akflQDj9rRy1ZbX5q+rGirDW2Aqcebwh45GwL2s5hPfW0u9HZlFWKSqZXBWidd56wqZf91Jx2TgFOV22wEeBCtQlqPJvVQilE5WNngZ2ntYNPSxLnFj49XgBnTTiltovrddEH6AmAQfL/q4u5qL6MoQGNQP2wGa5QlQ6MSCeFtlrOlKXx0uiTexqxPLuNr2eg/fGnKB6hLezFYSahS+afPnfF8K8eCXopB7QxfWj9j2g8lBQP10SKcnv6lK89SriN6IdGGN5FQbV5I=
+  app: agile-retreat-41726
+  on:
+    repo: theperfectfuel/SharedBrew-client
