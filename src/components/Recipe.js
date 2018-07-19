@@ -107,7 +107,7 @@ class Recipe extends Component {
             })
                 .then(response => {
                     console.log(response);
-                    window.location = '/list-recipes';
+                    window.location = '/list-shopping-lists';
                 })
                 .catch(error => {
                     console.log(error);
