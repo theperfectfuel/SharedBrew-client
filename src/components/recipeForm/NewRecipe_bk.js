@@ -282,7 +282,7 @@ class NewRecipe extends Component {
                         <div style={formHeader}>
                             <h2>Create a new recipe!</h2>
                         </div>
-                        <form className="form-horizontal" method="post" action="http://localhost:8080/new-recipe">
+                        <form className="form-horizontal" method="post" action="https://protected-spire-50393.herokuapp.com/new-recipe">
                         <div id="beerForm">
 
                             <div className="form-group">

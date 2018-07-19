@@ -30,7 +30,7 @@ class ShoppingList extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.shoppingListId;
-        const shoppingListURL = 'http://localhost:8080/shopping-list/' + id;
+        const shoppingListURL = 'https://protected-spire-50393.herokuapp.com/shopping-list/' + id;
         console.log(shoppingListURL);
 
         axios(shoppingListURL, {

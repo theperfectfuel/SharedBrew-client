@@ -10,7 +10,7 @@ class RecipeContainer extends Component {
 
     componentDidMount() {
 
-        fetch('http://localhost:8080/list-recipes')
+        fetch('https://protected-spire-50393.herokuapp.com/list-recipes')
           .then(response => {
             return response.json()
           })

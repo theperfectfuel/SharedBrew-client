@@ -36,8 +36,8 @@ class Recipe extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.recipeId;
-        shoppingListUrl = 'http://localhost:8080/shopping-list/' + id;
-        const recipeURL = 'http://localhost:8080/list-recipes/' + id;
+        shoppingListUrl = 'https://protected-spire-50393.herokuapp.com/shopping-list/' + id;
+        const recipeURL = 'https://protected-spire-50393.herokuapp.com/list-recipes/' + id;
         fetch(recipeURL)
         .then(response => {
           return response.json()

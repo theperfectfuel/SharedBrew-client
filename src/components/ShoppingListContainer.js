@@ -14,7 +14,7 @@ class ShoppingListContainer extends Component {
 
     componentDidMount() {
 
-        axios('http://localhost:8080/shopping-lists', {
+        axios('https://protected-spire-50393.herokuapp.com/shopping-lists', {
             withCredentials: true,
             method: 'get',
             headers: {

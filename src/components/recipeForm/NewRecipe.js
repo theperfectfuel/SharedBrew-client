@@ -327,7 +327,7 @@ export class NewRecipe extends Component {
 
         if (!this.props.errors) {
 
-            axios('http://localhost:8080/new-recipe', {
+            axios('https://protected-spire-50393.herokuapp.com/new-recipe', {
                 method: 'post',
                 data: this.props.formValues,
                 withCredentials: true

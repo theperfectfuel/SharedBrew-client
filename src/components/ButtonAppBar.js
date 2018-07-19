@@ -47,7 +47,7 @@ class ButtonAppBar extends Component {
                 return(
                     <Button 
                         //component={Link} 
-                        href="/auth/google" 
+                        href="https://protected-spire-50393.herokuapp.com/auth/google" 
                         style={loginBtnStyle}
                         color="inherit">
                         Login
