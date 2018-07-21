@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
+import {API_BASE_URL} from '../config';
 
 class RecipeContainer extends Component {
     constructor(props) {
@@ -10,7 +11,7 @@ class RecipeContainer extends Component {
 
     componentDidMount() {
 
-        fetch('https://protected-spire-50393.herokuapp.com/list-recipes')
+        fetch(`${API_BASE_URL}/list-recipes`)
           .then(response => {
             return response.json()
           })

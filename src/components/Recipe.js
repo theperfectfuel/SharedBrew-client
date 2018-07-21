@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import {API_BASE_URL} from '../config';
+
 
 const styles = theme => ({
   root: {
@@ -22,7 +25,7 @@ const instructionsStyle = {
     whiteSpace: 'pre-wrap'
 }
 
-var shoppingListUrl = '';
+var shoppingListURL = '';
 
 class Recipe extends Component {
 
@@ -36,12 +39,13 @@ class Recipe extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.recipeId;
-        shoppingListUrl = 'https://protected-spire-50393.herokuapp.com/shopping-list/' + id;
-        const recipeURL = 'https://protected-spire-50393.herokuapp.com/list-recipes/' + id;
+        shoppingListURL = `${API_BASE_URL}/shopping-list/` + id;
+        const recipeURL = `${API_BASE_URL}/list-recipes/` + id;
         fetch(recipeURL)
-        .then(response => {
-          return response.json()
-        })
+          .then(response => {
+              console.log('the response is: ', response);
+            return response.json()
+          })
         .then(data => {
           this.setState({
               recipe: data
@@ -100,10 +104,13 @@ class Recipe extends Component {
             e.preventDefault();
             console.log('recipe from state in createShoppingList: ', this.state.recipe);
     
-            axios(shoppingListUrl, {
+            axios(shoppingListURL, {
                 method: 'post',
                 data: this.state.recipe,
-                withCredentials: true
+                headers: {
+                    // Provide our auth token as credentials
+                    Authorization: `Bearer ${this.props.authToken}`
+                }
             })
                 .then(response => {
                     console.log(response);
@@ -178,5 +185,9 @@ class Recipe extends Component {
 Recipe.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-  
-export default withStyles(styles)(Recipe);
+
+const mapStateToProps = state => ({
+    authToken: state.auth.authToken
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Recipe));
