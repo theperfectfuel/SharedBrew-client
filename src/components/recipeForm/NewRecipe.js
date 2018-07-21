@@ -331,7 +331,10 @@ export class NewRecipe extends Component {
             axios(`${API_BASE_URL}/new-recipe`, {
                 method: 'post',
                 data: this.props.formValues,
-                withCredentials: true
+                headers: {
+                    // Provide our auth token as credentials
+                    Authorization: `Bearer ${this.props.authToken}`
+                }
             })
                 .then(response => {
                     console.log(response);
@@ -387,7 +390,10 @@ export class NewRecipe extends Component {
 }
 
 function mapStateToProps(state) {
-    return { formValues: state.form.NewRecipe.values };
+    return { 
+        formValues: state.form.NewRecipe.values,
+        authToken: state.auth.authToken
+    };
 };
 
 NewRecipe = connect(mapStateToProps, actions)(NewRecipe);
