@@ -5,6 +5,7 @@ import FormTextArea from './FormTextArea';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import axios from 'axios';
+import {API_BASE_URL} from '../../config';
 
 //############################################
 // STYLES
@@ -327,7 +328,7 @@ export class NewRecipe extends Component {
 
         if (!this.props.errors) {
 
-            axios('https://protected-spire-50393.herokuapp.com/new-recipe', {
+            axios(`${API_BASE_URL}/new-recipe`, {
                 method: 'post',
                 data: this.props.formValues,
                 withCredentials: true

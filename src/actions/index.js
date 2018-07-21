@@ -1,12 +1,13 @@
 //#####################################
 //  INDEX.JS FILE FOR ACTIONS DIR
 //#####################################
+import {API_BASE_URL} from '../config';
 
 import { FETCH_USER } from './types';
 import axios from 'axios';
 
 export const fetchUser = () => (dispatch) => {
-    axios.get('https://protected-spire-50393.herokuapp.com/check-user')
+    axios.get(`${API_BASE_URL}/check-user`)
         .then(user => {
             dispatch({ type: FETCH_USER, payload: user.data });
         });

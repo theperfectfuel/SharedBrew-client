@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import {API_BASE_URL} from '../config';
 
 const styles = theme => ({
   root: {
@@ -30,15 +32,14 @@ class ShoppingList extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.shoppingListId;
-        const shoppingListURL = 'https://protected-spire-50393.herokuapp.com/shopping-list/' + id;
+        const shoppingListURL = `${API_BASE_URL}/shopping-list/` + id;
         console.log(shoppingListURL);
 
         axios(shoppingListURL, {
-            withCredentials: true,
             method: 'get',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                // Provide our auth token as credentials
+                Authorization: `Bearer ${this.props.authToken}`
             }
         })
         //fetch(shoppingListURL)
@@ -132,5 +133,9 @@ class ShoppingList extends Component {
 ShoppingList.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
+const mapStateToProps = state => ({
+    authToken: state.auth.authToken
+});
   
-export default withStyles(styles)(ShoppingList);
+export default connect(mapStateToProps)(withStyles(styles)(ShoppingList));

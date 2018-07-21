@@ -6,7 +6,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import {clearAuth} from '../actions/auth';
+import {clearAuthToken} from '../local-storage';
 
 const styles = {
     root: {
@@ -39,19 +41,36 @@ const homeLink = {
 
 class ButtonAppBar extends Component {
 
+    logOut() {
+        this.props.dispatch(clearAuth());
+        clearAuthToken();
+        return <Redirect to="/" />;
+    }
+
     renderContent() {
         switch(this.props.auth) {
             case null:
                 return;
             case false:
                 return(
-                    <Button 
-                        //component={Link} 
-                        href="https://protected-spire-50393.herokuapp.com/auth/google" 
-                        style={loginBtnStyle}
-                        color="inherit">
-                        Login
-                    </Button>
+                    <span>
+                        <Button 
+                            component={Link} 
+                            //href="https://protected-spire-50393.herokuapp.com/auth/google" 
+                            to="login"
+                            style={loginBtnStyle}
+                            color="inherit">
+                            Login
+                        </Button>
+                        <Button 
+                            component={Link} 
+                            //href="https://protected-spire-50393.herokuapp.com/auth/google" 
+                            to="/register"
+                            style={loginBtnStyle}
+                            color="inherit">
+                            Register
+                        </Button>
+                    </span>
                 );  
             default:
                 return(
@@ -71,8 +90,7 @@ class ButtonAppBar extends Component {
                             New Recipe
                         </Button>
                         <Button 
-                            //component={Link}
-                            href="/logout"
+                            onClick={() => this.logOut()}
                             style={loginBtnStyle} 
                             color="inherit">
                             Logout
@@ -107,8 +125,8 @@ ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function mapStateToProps({auth}) {
-    return {auth};
-}
+const mapStateToProps = state => ({
+    auth: state.auth.currentUser !== null
+});
 
 export default connect(mapStateToProps)(withStyles(styles)(ButtonAppBar));

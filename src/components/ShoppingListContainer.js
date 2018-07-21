@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {API_BASE_URL} from '../config';
 
 class ShoppingListContainer extends Component {
     constructor(props) {
@@ -14,12 +16,12 @@ class ShoppingListContainer extends Component {
 
     componentDidMount() {
 
-        axios('https://protected-spire-50393.herokuapp.com/shopping-lists', {
+        axios(`${API_BASE_URL}/shopping-lists`, {
             withCredentials: true,
             method: 'get',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                // Provide our auth token as credentials
+                Authorization: `Bearer ${this.props.authToken}`
             }
         })
           .then(response => {
@@ -72,4 +74,8 @@ class ShoppingListContainer extends Component {
     }
 }
 
-export default ShoppingListContainer;
+const mapStateToProps = state => ({
+    authToken: state.auth.authToken
+});
+
+export default connect(mapStateToProps)(ShoppingListContainer);
