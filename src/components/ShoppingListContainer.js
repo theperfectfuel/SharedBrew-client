@@ -17,7 +17,6 @@ class ShoppingListContainer extends Component {
     componentDidMount() {
 
         axios(`${API_BASE_URL}/shopping-lists`, {
-            withCredentials: true,
             method: 'get',
             headers: {
                 // Provide our auth token as credentials
