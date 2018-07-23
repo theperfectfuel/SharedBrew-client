@@ -4,13 +4,34 @@ import './App.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
+import { withStyles, Card, CardActions, CardContent, CardMedia, Grid } from '../../node_modules/@material-ui/core';
+
+const styles = theme => ({
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing.unit * 2,
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+    card: {
+        minHeight: '170px',
+        fontSize: '16px'
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+      },
+  });
 
 class ShoppingListContainer extends Component {
     constructor(props) {
         super(props);
         this.state = { 
             shoppingLists: [],
-            brewer: ''
+            brewer: '',
+            spacing: '16'
          };
     }
 
@@ -41,33 +62,39 @@ class ShoppingListContainer extends Component {
 
     render() {
 
-        const shoppingListStyle = {
-            padding: '0',
-            fontSize: '18px'
-        };
+        const { classes } = this.props;
 
         const shoppingLists = this.state.shoppingLists.map((list, index) => {
             return (
-                <li key={list._id}>
-                    <div>
-                        <Link to={'/list-shopping-lists/' + list._id}>Name: {list.beer_name}</Link><br />
-                    </div>
-                    <div>
-                        <p>
-                            Date Created: {list.createdDate.slice(0, 10)}<br />
-                            Batch Size: {list.batch_size}
-                        </p>
-                    </div>
-                </li>
+                    <Grid item  xs={12} sm={6} md={3} key={list._id}>
+                        <Card className={classes.card}>
+                            <CardMedia
+                                className={classes.media}
+                                image={`https://source.unsplash.com/collection/2350698/${index}`}
+                                title="Beer in a mug"
+                            />
+                            <CardContent>
+                                <div>
+                                    <Link to={'/list-shopping-lists/' + list._id}>Name: {list.beer_name}</Link><br />
+                                </div>
+                                <div>
+                                    <p>
+                                        Date Created: {list.createdDate.slice(0, 10)}<br />
+                                        Batch Size: {list.batch_size}
+                                    </p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grid>
             );
         });
 
         return (
-            <div>
+            <div className={classes.root}>
                 <h2>Shopping Lists for {this.state.brewer}</h2>
-                <ul style={shoppingListStyle}>
+                <Grid container className={classes.paper} spacing={24}>
                     {shoppingLists}
-                </ul>
+                </Grid>
             </div>
         );
     }
@@ -77,4 +104,4 @@ const mapStateToProps = state => ({
     authToken: state.auth.authToken
 });
 
-export default connect(mapStateToProps)(ShoppingListContainer);
+export default connect(mapStateToProps)(withStyles(styles)(ShoppingListContainer));
