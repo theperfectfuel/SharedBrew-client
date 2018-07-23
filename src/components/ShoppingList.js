@@ -99,6 +99,30 @@ class ShoppingList extends Component {
 
     render() {
 
+        const deleteShoppingList = (e) => {
+
+            e.preventDefault();
+            const id = this.props.match.params.shoppingListId;
+            const shoppingListURL = `${API_BASE_URL}/shopping-list/` + id;
+            console.log('shoppingListURL in delete is: ', shoppingListURL);
+    
+            axios(shoppingListURL, {
+                method: 'delete',
+                headers: {
+                    // Provide our auth token as credentials
+                    Authorization: `Bearer ${this.props.authToken}`
+                }
+            })
+                .then(response => {
+                    console.log(response);
+                    window.location = '/list-shopping-lists';
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+    
+        }
+
         const { classes } = this.props;
 
         return(
@@ -122,6 +146,11 @@ class ShoppingList extends Component {
                     <Typography variant="display1" style={sectionStyle} component="div">
                         Other Ingredients: {this.state.other}
                     </Typography>
+                    <div>
+                        <form onSubmit={deleteShoppingList}>
+                            <button type='submit'>Delete shopping list</button>
+                        </form>
+                    </div>
                 </Paper>
 
             </div>
