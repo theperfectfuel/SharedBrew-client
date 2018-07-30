@@ -1,20 +1,48 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import {API_BASE_URL} from '../config';
+import { 
+    withStyles, 
+    Card, 
+    CardActions, 
+    CardContent, 
+    CardMedia, 
+    Grid,
+    Paper,
+    Typography
+} from '../../node_modules/@material-ui/core';
 
+// const styles = theme => ({
+//   root: {
+//     ...theme.mixins.gutters(),
+//     paddingTop: theme.spacing.unit * 2,
+//     paddingBottom: theme.spacing.unit * 2,
+//   },
+// });
 
 const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-  },
-});
+    root: {
+      flexGrow: 1,
+    },
+    paper: {
+      padding: theme.spacing.unit * 2,
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+    card: {
+        minHeight: '170px',
+        fontSize: '16px'
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+      },
+    borderBottom: {
+        borderBottom: '1px solid #ddd'
+    }
+  });
 
 const sectionStyle = {
     padding: '5px',
@@ -125,47 +153,65 @@ class Recipe extends Component {
         const { classes } = this.props;
 
         return(
-            <div>
-                <Paper className={classes.root} elevation={1}>
-                    <Typography variant="display4" component="h1">
-                        {this.state.recipe.beer_name}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        ABV: {this.state.recipe.beer_abv}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Style: {this.state.recipe.beer_style}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        IBU (Bitterness): {this.state.recipe.beer_ibu}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        SRM (Color): {this.state.recipe.beer_srm}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Difficulty: {this.state.recipe.brew_difficulty}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Batch Size: {this.state.recipe.batch_size}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Original Gravity: {this.state.recipe.orig_grav}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Final Gravity: {this.state.recipe.final_grav}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Grains: {this.state.grains}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Hops: {this.state.hops}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Yeast: {this.state.yeast}
-                    </Typography>
-                    <Typography variant="display1" style={sectionStyle} component="div">
-                        Other: {this.state.other}
-                    </Typography>
+            <div className={classes.root}>
+                <Grid container justify="center" className={classes.paper} spacing={24}>
+                <Grid item  xs={12} sm={9} md={6}>
+                <Card className={classes.card}>
+                <CardMedia
+                            className={classes.media}
+                            image={`https://source.unsplash.com/collection/2391947`}
+                            title="Beer in various ways"
+                />
+                <CardContent>
+                    <div className={classes.borderBottom}>
+                        <Typography variant="display2" component="h1">
+                            {this.state.recipe.beer_name}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            ABV: {this.state.recipe.beer_abv}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Style: {this.state.recipe.beer_style}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            IBU (Bitterness): {this.state.recipe.beer_ibu}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            SRM (Color): {this.state.recipe.beer_srm}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Difficulty: {this.state.recipe.brew_difficulty}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Batch Size: {this.state.recipe.batch_size}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Original Gravity: {this.state.recipe.orig_grav}
+                        </Typography>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Final Gravity: {this.state.recipe.final_grav}
+                        </Typography>
+                    </div>
+                    <div className={classes.borderBottom}>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Grains: {this.state.grains}
+                        </Typography>
+                    </div>
+                    <div className={classes.borderBottom}>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Hops: {this.state.hops}
+                        </Typography>
+                    </div>
+                    <div className={classes.borderBottom}>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Yeast: {this.state.yeast}
+                        </Typography>
+                    </div>
+                    <div className={classes.borderBottom}>
+                        <Typography variant="display1" style={sectionStyle} component="div">
+                            Other: {this.state.other}
+                        </Typography>
+                    </div>
                     <Typography variant="display1" style={Object.assign({}, sectionStyle, instructionsStyle)} component="div">
                         Brew Instructions: <div>{this.state.recipe.brew_instructions}</div>
                     </Typography>
@@ -174,8 +220,10 @@ class Recipe extends Component {
                             <button type='submit'>Create a new shopping list</button>
                         </form>
                     </div>
-                </Paper>
-
+                </CardContent>
+                </Card>
+                </Grid>
+                </Grid>
             </div>
         );
 
