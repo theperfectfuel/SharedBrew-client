@@ -58,7 +58,7 @@ class ShoppingList extends Component {
                 return(
                         <div style={sectionStyle} key={index}>
                             <span>Grain type: {grain.grains_type}</span><br />
-                            <span>Grain amount: {grain.grains_amount}</span>
+                            <span>Grain amount: {grain.grains_amount} lbs</span>
                         </div>
                     ); 
             });
@@ -68,7 +68,7 @@ class ShoppingList extends Component {
                 return(
                         <div style={sectionStyle} key={index}>
                             <span>Yeast type: {yeast.yeast_type}</span><br />
-                            <span>Yeast amount: {yeast.yeast_amount}</span>
+                            <span>Yeast amount: {yeast.yeast_amount} oz</span>
                         </div>
                     ); 
             });
@@ -78,7 +78,7 @@ class ShoppingList extends Component {
                 return(
                         <div style={sectionStyle} key={index}>
                             <span>Hops type: {hops.hops_type}</span><br />
-                            <span>Hops amount: {hops.hops_amount}</span>
+                            <span>Hops amount: {hops.hops_amount} oz</span>
                         </div>
                     ); 
             });
@@ -95,6 +95,7 @@ class ShoppingList extends Component {
             this.setState({other});
 
         })
+        window.scrollTo(0, 0);
     }
 
     render() {
@@ -128,11 +129,11 @@ class ShoppingList extends Component {
         return(
             <div>
                 <Paper className={classes.root} elevation={1}>
-                    <Typography variant="display4" component="h1">
+                    <Typography variant="display3" component="h1">
                         {this.state.shoppingList.beer_name}
                     </Typography>
                     <Typography variant="display1" style={sectionStyle} component="div">
-                        Batch Size: {this.state.shoppingList.batch_size}
+                        Batch Size: {this.state.shoppingList.batch_size} gal
                     </Typography>
                     <Typography variant="display1" style={sectionStyle} component="div">
                         Grains: {this.state.grains}

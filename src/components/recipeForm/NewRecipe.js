@@ -82,41 +82,13 @@ function validate(values) {
 const FIELDS = [
     { label: 'Beer Name', name: 'beer_name', validate: [ required ]},
     { label: 'Beer Style', name: 'beer_style'},
-    { label: 'Beer ABV', name: 'beer_abv'},
+    { label: 'Beer ABV (%)', name: 'beer_abv'},
     { label: 'IBU (Bitterness)', name: 'beer_ibu'},
     { label: 'SRM (Color)', name: 'beer_srm'},
     { label: 'Original Gravity', name: 'orig_grav'},
     { label: 'Final Gravity', name: 'final_grav'}
 ];
 
-//############################################
-// ARRAY FOR SELECT FIELD RENDERING
-//############################################
-
-// const SELECT_FIELDS = [
-//     {   label: 'Brew Difficulty', 
-//         name: 'brew_difficulty',
-//         options: ['Easy', 'Medium', 'Hard']
-//     },
-//     {   label: 'Batch Size', 
-//         name: 'batch_size',
-//         options: [1, 3, 5]
-//     }
-// ];
-
-// const renderedSelectFields = FIELDS.map(field => {
-//     return (
-//         <div key={field.name}>
-//             <Field 
-//                 label={field.label} 
-//                 type='select' 
-//                 name={field.name} 
-//                 component={FormSelect} 
-//                 options={field.options}
-//             />
-//         </div>
-//     )
-// });
 
 //############################################
 // RENDERING FIELDS FOR FORM
@@ -168,7 +140,7 @@ const renderedDifficulty = () => {
 const renderedBatchSize = () => {
     return(
         <div>
-            <label style={labelStyle}>Batch Size</label>
+            <label style={labelStyle}>Batch Size (gal)</label>
             <div>
             <Field 
                 style={inputStyle} 
@@ -205,7 +177,7 @@ const renderGrains = ({ fields, meta: { error, submitFailed } }) => (
                     name={`${grain}.grains_amount`}
                     type="text"
                     component={FormTextField}
-                    label="Grain Amount"
+                    label="Grain Amount (lbs)"
                 />
             </li>
         )}
@@ -236,7 +208,7 @@ const renderHops = ({ fields, meta: { error, submitFailed } }) => (
                     name={`${hop}.hops_amount`}
                     type="text"
                     component={FormTextField}
-                    label="Hops Amount"
+                    label="Hops Amount (oz)"
                 />
             </li>
         ))}
@@ -267,7 +239,7 @@ const renderYeast = ({ fields, meta: { error, submitFailed } }) => (
                     name={`${yeast}.yeast_amount`}
                     type="text"
                     component={FormTextField}
-                    label="Yeast Amount"
+                    label="Yeast Amount (oz)"
                 />
             </li>
         ))}

@@ -75,7 +75,7 @@ class RecipeContainer extends Component {
                         </div>
                         <div>
                             <p>
-                            ABV: {recipe.beer_abv}<br />
+                            ABV: {recipe.beer_abv}%<br />
                             Style: {recipe.beer_style}<br />
                             Difficulty: {recipe.brew_difficulty}<br />
                             IBU: {recipe.beer_ibu}<br />
