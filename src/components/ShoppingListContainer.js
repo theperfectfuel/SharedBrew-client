@@ -80,7 +80,7 @@ class ShoppingListContainer extends Component {
                                 <div>
                                     <p>
                                         Date Created: {list.createdDate.slice(0, 10)}<br />
-                                        Batch Size: {list.batch_size}
+                                        Batch Size: {list.batch_size} gal
                                     </p>
                                 </div>
                             </CardContent>
